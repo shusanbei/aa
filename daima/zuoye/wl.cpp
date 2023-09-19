@@ -8,12 +8,14 @@ using namespace std;
 size：当前棋盘的大小:2^k
 */
 
-int board[1000][1000];
+int board[100][100];
 int tile = 1; // L型骨牌的编号(递增)
 void chessBoard(int tr, int tc, int dr, int dc, int size)
 {
     if (size == 1)
+    {
         return;                        // 棋盘方格大小为1,说明递归到最里层
+    }
     int t = tile++;                    // 每次递增1
     int s = size / 2;                  // 棋盘中间的行、列号(相等的)
     if (dr < tr + s && dc < tc + s)    // 检查特殊方块是否在左上角子棋盘中
@@ -46,7 +48,17 @@ void chessBoard(int tr, int tc, int dr, int dc, int size)
     }
 }
 
-int main(){
-    
+int main()
+{
+    chessBoard(1, 1, 6, 6, 16);
+
+    for (int i = 1; i <= 16; i++)
+    {
+        for (int j = 1; j <= 16; j++)
+        {
+            cout << board[i][j] << " ";
+        }
+        cout << endl;
+    }
     return 0;
 }
