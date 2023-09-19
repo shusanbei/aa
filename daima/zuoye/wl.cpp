@@ -1,8 +1,14 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
 /*(tr,tc) -- 当前棋盘左上角坐标
     (dr,dc) -- 黑色方格所在位置
 size：当前棋盘的大小:2^k
 */
 
+int board[1000][1000];
 int tile = 1; // L型骨牌的编号(递增)
 void chessBoard(int tr, int tc, int dr, int dc, int size)
 {
@@ -38,4 +44,9 @@ void chessBoard(int tr, int tc, int dr, int dc, int size)
         board[tr + s][tc + s] = t; // 右下角棋盘的左上角
         chessBoard(tr + s, tc + s, tr + s, tc + s, s);
     }
+}
+
+int main(){
+    
+    return 0;
 }
