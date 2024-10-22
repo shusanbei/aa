@@ -1,75 +1,52 @@
 #include <iostream>
-#include <algorithm>
-#include <chrono>
-#include <random>
-using namespace std::chrono;
+#include <vector>
+
 using namespace std;
 
-int n = 100;  // 商品个数
-int m = 2000;  // 总容量
-int w[1009], v[1009], dp[1009][2009], flag[1009],sum=0;
+int best_value = 0; // 保存最大价值
+vector<int> best_items; // 保存最优解的货物个数
 
-void generateTestData() {
-    auto seed = duration_cast<milliseconds>(high_resolution_clock::now().time_since_epoch()).count();
-    std::mt19937 gen(seed);
-    std::uniform_int_distribution<int> weightDist(1, 100);
-    std::uniform_int_distribution<int> valueDist(1, 100);
-
-    cout << "随机生成的商品数据:" << endl;
-    for (int i = 1; i <= n; i++) {
-        w[i] = weightDist(gen);
-        v[i] = valueDist(gen);
-        cout << "商品" << i << ": 重量=" << w[i] << " 价值=" << v[i] << endl;
-    }
-}
-
-void solve() {
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= m; j++) {
-            if (j < w[i]) {
-                dp[i][j] = dp[i - 1][j];
-            } else {
-                dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - w[i]] + v[i]);
+void backtrack(int current_index, int capacity_ship1, int capacity_ship2, int total_value, int total_items, vector<int>& weights, vector<int>& values, int C1, int C2) {
+    if (current_index == weights.size()) { // 到达物品的最后一个
+        if (total_value > best_value) { // 更新最优解
+            best_value = total_value;
+            best_items = vector<int>(total_items);
+            for (int i = 0; i < total_items; ++i) {
+                best_items[i] = i;
             }
         }
+        return;
     }
 
-    for (int i = n; i >= 1; i--) {
-        if (dp[i][m] == dp[i - 1][m]) {
-            flag[i] = 0;
-        } else {
-            flag[i] = 1;
-        }
+    // 尝试不放入当前物品
+    backtrack(current_index + 1, capacity_ship1, capacity_ship2, total_value, total_items, weights, values, C1, C2);
+
+    // 尝试放入第一艘船
+    if (capacity_ship1 >= weights[current_index]) {
+        backtrack(current_index + 1, capacity_ship1 - weights[current_index], capacity_ship2, total_value + values[current_index], total_items + 1, weights, values, C1, C2);
+    }
+
+    // 尝试放入第二艘船
+    if (capacity_ship2 >= weights[current_index]) {
+        backtrack(current_index + 1, capacity_ship1, capacity_ship2 - weights[current_index], total_value + values[current_index], total_items + 1, weights, values, C1, C2);
     }
 }
 
 int main() {
-    cout << "输入商品个数n与总容量m:" << endl;
-    cin >> n >> m;
+    int C1 = 10; // 第一艘船的容量
+    int C2 = 15; // 第二艘船的容量
+    vector<int> weights = {2, 3, 5}; // 物品重量列表
+    vector<int> values = {3, 4, 6}; // 物品价值列表
 
-    cout << "输入n个商品各自的质量以及价值:" << endl;
-    for (int i = 1; i <= n; i++) {
-        cin >> w[i] >> v[i];
-    }
-    // generateTestData();  // 使用随机数据生成
+    backtrack(0, C1, C2, 0, 0, weights, values, C1, C2);
 
-    auto start_time = high_resolution_clock::now();  // 记录开始时间
-
-    solve();
-
-    auto end_time = high_resolution_clock::now();  // 记录结束时间
-    auto duration = duration_cast<milliseconds>(end_time - start_time);  // 计算时间差
-
-    cout << "最大价值:" << dp[n][m] << endl;
-
-    cout << n << "个商品的取舍方案:";
-    for (int i = 1; i <= n; i++) {
-        cout << flag[i] << " ";
-        if(flag[i]) sum+=w[i];
+    cout << "最大价值: " << best_value << endl;
+    cout << "最优解的货物个数: " << best_items.size() << endl;
+    cout << "最优解的货物索引: ";
+    for (int i = 0; i < best_items.size(); ++i) {
+        cout << best_items[i] << " ";
     }
     cout << endl;
 
-    cout << "选取的物品的总重量为：" << sum << " " << m << endl;
-    cout << "运行时间为：" << duration.count() << "ms." << endl;
     return 0;
 }

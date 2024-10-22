@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Distance Data</title>
+</head>
+<body>
+    <h1>Distance Data from shumeipai Database</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Distance</th>
+        </tr>
+        {% for row in results %}
+        <tr>
+            <td>{{ row['id'] }}</td>
+            <td>{{ row['distance'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

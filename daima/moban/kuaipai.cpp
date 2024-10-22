@@ -1,23 +1,25 @@
 #include<bits/stdc++.h>
 using namespace std;
-int n,ar[10000009];
+int n,a[10000009];
 
-void quick_sort(int ar[],int l,int r){
+// 分区：将比参照值小的移动到参照值的左侧，比参照值大的移动到右侧；
+// 左递归：对左侧数组进行递归；
+// 右递归：对右侧数组进行递归；
+
+// 时间：O（nlogn），空间：O（1），就地排序
+void quick_sort(int a[],int l,int r){
     if(l>=r) return;
 
-    int x=ar[(l+r)>>1],i=l-1,j=r+1;
+    int x=a[(l+r)/2],i=l-1,j=r+1;
     while(i<j){
-        do i++; while(ar[i]<x);
-        do j--; while(ar[j]>x);
-        if(i<j) //swap(ar[i],ar[j]);
-        {
-            int tem=ar[i];
-            ar[i]=ar[j];
-            ar[j]=tem;
+        do i++; while(a[i]<x);
+        do j--; while(a[j]>x);
+        if(i<j) {
+            swap(a[i],a[j]);
         }
     }
-    quick_sort(ar,l,j);
-    quick_sort(ar,j+1,r);
+    quick_sort(a,l,j);
+    quick_sort(a,j+1,r);
 }
 
 // void quick_sort(int q[], int l, int r)
@@ -36,11 +38,12 @@ void quick_sort(int ar[],int l,int r){
 
 //从大到小改 内部while 的条件即可
 int main(){
-    scanf("%d",&n);
-    for(int i=0;i<n;i++) scanf("%d",&ar[i]);
+    cin>>n;
+    for(int i=0;i<n;i++) cin>>a[i];
 
-    quick_sort(ar,0,n-1);
+    quick_sort(a,0,n-1);
     
-    for(int i=0;i<n;i++) printf("%d ",ar[i]);
+    for(int i=0;i<n;i++) cout<<a[i]<<" ";
+    cout<<endl;
     return 0;
 }

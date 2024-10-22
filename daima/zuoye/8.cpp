@@ -5,16 +5,19 @@
 using namespace std::chrono;
 using namespace std;
 
+//棋盘的最大规模N
 const int N = 20;
 
-// 第r行，第i列能不能放棋子：用数组dg udg cor 分别表示：点对应的两个斜线以及列上是否有皇后。
+// 第r行，第i列能不能放棋子：用数组dg udg cor 分别表示：当前点对应的两个斜线以及列上是否有皇后。
 // dg[i + r] 表示 r行i列处，所在的对角线上有没有棋子，
-// udg[n - i + r]表示 r行i列处，所在的反对角线上有没有棋子，cor[i]表示第i列上有没有棋子。
+// udg[n - i + r]表示 r行i列处，所在的反对角线上有没有棋子，
+// cor[i]表示第i列上有没有棋子。
 // 如果 r行i列的对角线，反对角线上都没有棋子，即!cor[i] && !dg[i + r] && !udg[n - i + r]为真，
 // 则代表 r行i列处可以放棋子。
 char q[N][N];                      //存储棋盘
 bool dg[N * 2], udg[N * 2], cor[N];//点对应的两个斜线以及列上是否有皇后
 
+//棋盘规模n 摆放方法sum
 int n,sum=0;
 
 void solve(int r){
@@ -35,7 +38,7 @@ void solve(int r){
         if(!cor[i] && !dg[i + r] && !udg[n - i + r]){
             q[r][i] = 'Q';
             cor[i] = dg[i + r] = udg[n - i + r] = 1;//对应的 列， 斜线 状态改变
-            solve(r + 1);                           //处理下一行
+            solve(r + 1);                           //对于下一行放置皇后
             cor[i] = dg[i + r] = udg[n - i + r] = 0;//回溯
             q[r][i] = '.';
         }

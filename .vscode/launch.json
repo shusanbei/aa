@@ -5,6 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Client",
+            "request": "launch",
+            "mainClass": "Client",
+            "projectName": "aa_3d95859"
+        },
+        {
+            "type": "java",
+            "name": "CIient",
+            "request": "launch",
+            "mainClass": "CIient",
+            "projectName": "aa_3d95859"
+        },
+        {
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
@@ -25,11 +39,11 @@
             "preLaunchTask": "build",
             "windows": {
                 "program": "${fileDirname}/${fileBasenameNoExtension}.exe",
-                "miDebuggerPath": "D:/aa/mingw64/bin/gdb.exe",
+                "miDebuggerPath": "D:/aa/mingw64/bin/gdb.exe"
             },
             "osx": {
                 "externalConsole": true
-            },
+            }
         }
     ]
 }

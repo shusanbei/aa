@@ -41,6 +41,7 @@ int gcd(int a,int b)
 }
 int main()
 {
+
     long long n,x=0;
     scanf("%lld",&n);
     for(int i=1;i<=n;i++)
